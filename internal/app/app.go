@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"os"
 	"os/signal"
 	"syscall"
@@ -9,21 +10,29 @@ import (
 	"github.com/amagkn/sso-service/pkg/base_errors"
 	"github.com/amagkn/sso-service/pkg/grpc_server"
 	"github.com/amagkn/sso-service/pkg/logger"
+	"github.com/amagkn/sso-service/pkg/postgres"
 )
 
 type Dependencies struct {
-	gRPCServer *grpc_server.GRPCServer
+	GRPCServer *grpc_server.GRPCServer
+	Postgres   *postgres.Pool
 }
 
-func Run(cfg config.Config) error {
+func Run(ctx context.Context, cfg config.Config) (err error) {
 	var deps Dependencies
 
+	deps.Postgres, err = postgres.New(ctx, cfg.Postgres)
+	if err != nil {
+		return base_errors.WithPath("postgres.New", err)
+	}
+	defer deps.Postgres.Close()
+
 	gRPCServer := grpc_server.New()
-	deps.gRPCServer = gRPCServer
+	deps.GRPCServer = gRPCServer
 
 	AuthDomain(deps)
 
-	err := gRPCServer.Run(cfg.GRPC.Port)
+	err = gRPCServer.Run(cfg.GRPC.Port)
 	if err != nil {
 		return base_errors.WithPath("grpc_server.Run", err)
 	}
