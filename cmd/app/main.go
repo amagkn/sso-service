@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/amagkn/sso-service/config"
+	"github.com/amagkn/sso-service/internal/app"
 	"github.com/amagkn/sso-service/pkg/logger"
 )
 
@@ -13,5 +14,10 @@ func main() {
 
 	logger.Init(cfg.Logger)
 
-	logger.Info("Hi there")
+	err = app.Run(cfg)
+	if err != nil {
+		logger.Fatal(err, "app.Run")
+	}
+
+	logger.Info("App stopped!")
 }
