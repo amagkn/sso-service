@@ -1,0 +1,7 @@
+version: "3"
+
+tasks:
+  run:
+    desc: "Run app"
+    cmds:
+      - CONFIG_PATH=.env.local go run cmd/app/main.go
