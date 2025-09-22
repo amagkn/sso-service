@@ -1,7 +1,24 @@
 version: "3"
 
+env:
+  DB_MIGRATE_URL: postgres://postgres:postgres@localhost:5432/sso_service?sslmode=disable
+  MIGRATE_PATH: ./migrations
+
 tasks:
+  tidy:
+    desc: "Mod tidy"
+    cmds:
+      - go mod tidy
   run:
     desc: "Run app"
+    deps: [tidy]
     cmds:
       - CONFIG_PATH=.env.local go run cmd/app/main.go
+  migrate-up:
+    desc: "Up all migrations"
+    cmds:
+      - migrate -database "{{.DB_MIGRATE_URL}}" -path "{{.MIGRATE_PATH}}" up
+  migrate-down:
+    desc: "Down all migrations"
+    cmds:
+      - migrate -database "{{.DB_MIGRATE_URL}}" -path "{{.MIGRATE_PATH}}" down -all
