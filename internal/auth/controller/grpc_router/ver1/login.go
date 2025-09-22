@@ -2,6 +2,7 @@ package ver1
 
 import (
 	"context"
+	"errors"
 
 	ssov1 "github.com/amagkn/sso-protos/gen/go/sso"
 	"github.com/amagkn/sso-service/internal/auth/dto"
@@ -28,6 +29,10 @@ func (h *Handlers) Login(ctx context.Context, req *ssov1.LoginRequest) (*ssov1.L
 	output, err := h.uc.Login(ctx, input)
 	if err != nil {
 		logger.Error(err, "h.uc.Login")
+
+		if errors.Is(err, base_errors.InvalidCredentials) {
+			return nil, errorResponse(codes.PermissionDenied, errorPayload{Type: base_errors.InvalidCredentials})
+		}
 
 		return nil, errorResponse(codes.Internal, errorPayload{Type: base_errors.InternalServer})
 	}

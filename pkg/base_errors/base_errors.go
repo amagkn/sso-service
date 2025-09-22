@@ -6,10 +6,11 @@ import (
 )
 
 var (
-	Validation     = errors.New("validation_error")
-	InternalServer = errors.New("internal_server_error")
-	InvalidJSON    = errors.New("invalid_json_body")
-	NotFound       = errors.New("not_found")
+	Validation         = errors.New("validation_error")
+	InternalServer     = errors.New("internal_server_error")
+	InvalidCredentials = errors.New("invalid_credentials")
+	InvalidJSON        = errors.New("invalid_json_body")
+	NotFound           = errors.New("not_found")
 )
 
 func WithPath(path string, err error) error {

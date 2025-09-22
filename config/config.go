@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"os"
+	"time"
 
 	"github.com/amagkn/sso-service/pkg/base_errors"
 	"github.com/amagkn/sso-service/pkg/grpc_server"
@@ -13,10 +14,10 @@ import (
 )
 
 type App struct {
-	ENV      string `envconfig:"APP_ENV"         required:"true"`
-	Name     string `envconfig:"APP_NAME"        required:"true"`
-	Version  string `envconfig:"APP_VERSION"     required:"true"`
-	TokenTTL string `envconfig:"APP_TOKEN_TTL"   required:"true"`
+	ENV      string        `envconfig:"APP_ENV"         required:"true"`
+	Name     string        `envconfig:"APP_NAME"        required:"true"`
+	Version  string        `envconfig:"APP_VERSION"     required:"true"`
+	TokenTTL time.Duration `envconfig:"APP_TOKEN_TTL"   required:"true"`
 }
 
 type Config struct {

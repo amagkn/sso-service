@@ -30,7 +30,7 @@ func Run(ctx context.Context, cfg config.Config) (err error) {
 	gRPCServer := grpc_server.New()
 	deps.GRPCServer = gRPCServer
 
-	AuthDomain(deps)
+	AuthDomain(deps, cfg.App.TokenTTL)
 
 	err = gRPCServer.Run(cfg.GRPC.Port)
 	if err != nil {
