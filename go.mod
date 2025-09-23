@@ -4,6 +4,7 @@ go 1.24.7
 
 require (
 	github.com/amagkn/sso-protos v0.0.2
+	github.com/doug-martin/goqu/v9 v9.19.0
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/jackc/pgx/v5 v5.7.6

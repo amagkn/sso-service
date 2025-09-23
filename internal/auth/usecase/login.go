@@ -12,13 +12,13 @@ import (
 func (uc *UseCase) Login(ctx context.Context, input dto.LoginInput) (dto.LoginOutput, error) {
 	var output dto.LoginOutput
 
-	user, err := uc.postgres.SelectUser(ctx, input.Email)
+	user, err := uc.postgres.SelectUserByEmail(ctx, input.Email)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserNotFound) {
 			return output, base_errors.InvalidCredentials
 		}
 
-		return output, base_errors.WithPath("uc.postgres.SelectUser", err)
+		return output, base_errors.WithPath("uc.postgres.SelectUserByEmail", err)
 	}
 
 	err = user.ComparePassword([]byte(input.Password))
@@ -26,13 +26,13 @@ func (uc *UseCase) Login(ctx context.Context, input dto.LoginInput) (dto.LoginOu
 		return output, base_errors.InvalidCredentials
 	}
 
-	app, err := uc.postgres.SelectApp(ctx, input.AppID)
+	app, err := uc.postgres.SelectAppByID(ctx, input.AppID)
 	if err != nil {
 		if errors.Is(err, entity.ErrAppNotFound) {
 			return output, entity.ErrInvalidAppID
 		}
 
-		return output, base_errors.WithPath("uc.postgres.SelectApp", err)
+		return output, base_errors.WithPath("uc.postgres.SelectAppByID", err)
 	}
 
 	output.Token, err = user.NewJWTToken(app, uc.tokenTTL)
