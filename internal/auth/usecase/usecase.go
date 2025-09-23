@@ -9,7 +9,7 @@ import (
 )
 
 type Postgres interface {
-	InsertUser(ctx context.Context, input dto.InsertUserInput) (entity.User, error)
+	InsertUser(ctx context.Context, input dto.InsertUserInput) (int64, error)
 	SelectUserByEmail(ctx context.Context, email string) (entity.User, error)
 	UserIsAdmin(ctx context.Context, userID int64) (bool, error)
 	SelectAppByID(ctx context.Context, appID int32) (entity.App, error)

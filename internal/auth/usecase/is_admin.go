@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/amagkn/sso-service/internal/auth/dto"
-	"github.com/amagkn/sso-service/pkg/base_errors"
+	"github.com/amagkn/sso-service/pkg/logger"
 )
 
 func (uc *UseCase) IsAdmin(ctx context.Context, input dto.IsAdminInput) (dto.IsAdminOutput, error) {
@@ -13,7 +13,9 @@ func (uc *UseCase) IsAdmin(ctx context.Context, input dto.IsAdminInput) (dto.IsA
 
 	output.IsAdmin, err = uc.postgres.UserIsAdmin(ctx, input.UserId)
 	if err != nil {
-		return output, base_errors.WithPath("uc.postgres.UserIsAdmin", err)
+		logger.Error(err, "uc.postgres.UserIsAdmin")
+
+		return output, err
 	}
 
 	return output, nil

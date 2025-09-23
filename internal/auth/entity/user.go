@@ -1,8 +1,10 @@
 package entity
 
 import (
+	"fmt"
 	"time"
 
+	"github.com/amagkn/sso-service/pkg/logger"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,6 +17,7 @@ type User struct {
 }
 
 func (u *User) ComparePassword(passHash []byte) error {
+	logger.Info(fmt.Sprintf("%s, %s", u.PassHash, passHash))
 	return bcrypt.CompareHashAndPassword(u.PassHash, passHash)
 }
 

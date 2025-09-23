@@ -2,9 +2,11 @@ package ver1
 
 import (
 	"context"
+	"errors"
 
 	ssov1 "github.com/amagkn/sso-protos/gen/go/sso"
 	"github.com/amagkn/sso-service/internal/auth/dto"
+	"github.com/amagkn/sso-service/internal/auth/entity"
 	"github.com/amagkn/sso-service/pkg/base_errors"
 	"github.com/amagkn/sso-service/pkg/logger"
 	"github.com/amagkn/sso-service/pkg/validation"
@@ -26,7 +28,9 @@ func (h *Handlers) Register(ctx context.Context, req *ssov1.RegisterRequest) (*s
 
 	output, err := h.uc.Register(ctx, input)
 	if err != nil {
-		logger.Error(err, "h.uc.Register")
+		if errors.Is(err, entity.ErrUserAlreadyExists) {
+			return nil, errorResponse(codes.InvalidArgument, errorPayload{Type: entity.ErrUserAlreadyExists})
+		}
 
 		return nil, errorResponse(codes.Internal, errorPayload{Type: base_errors.InternalServer})
 	}
