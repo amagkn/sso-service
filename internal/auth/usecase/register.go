@@ -19,7 +19,6 @@ func (uc *UseCase) Register(ctx context.Context, input dto.RegisterInput) (dto.R
 	}
 
 	saveUserDto := dto.InsertUserInput{Email: input.Email, PassHash: passHash}
-
 	userId, err := uc.postgres.InsertUser(ctx, saveUserDto)
 	if err != nil {
 		logger.Error(err, "uc.postgres.InsertUser")

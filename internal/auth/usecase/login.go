@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/amagkn/sso-service/internal/auth/dto"
-	"github.com/amagkn/sso-service/pkg/base_errors"
 	"github.com/amagkn/sso-service/pkg/logger"
 )
 
@@ -22,7 +21,7 @@ func (uc *UseCase) Login(ctx context.Context, input dto.LoginInput) (dto.LoginOu
 	if err != nil {
 		logger.Error(err, "user.ComparePassword")
 
-		return output, base_errors.InvalidCredentials
+		return output, err
 	}
 
 	app, err := uc.postgres.SelectAppByID(ctx, input.AppID)

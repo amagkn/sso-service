@@ -29,8 +29,12 @@ func (h *Handlers) Login(ctx context.Context, req *ssov1.LoginRequest) (*ssov1.L
 
 	output, err := h.uc.Login(ctx, input)
 	if err != nil {
-		if errors.Is(err, entity.ErrUserNotFound) || errors.Is(err, entity.ErrAppNotFound) {
+		if errors.Is(err, entity.ErrUserNotFound) {
 			return nil, errorResponse(codes.PermissionDenied, errorPayload{Type: base_errors.InvalidCredentials})
+		}
+
+		if errors.Is(err, entity.ErrAppNotFound) {
+			return nil, errorResponse(codes.PermissionDenied, errorPayload{Type: entity.ErrAppNotFound})
 		}
 
 		return nil, errorResponse(codes.Internal, errorPayload{Type: base_errors.InternalServer})
