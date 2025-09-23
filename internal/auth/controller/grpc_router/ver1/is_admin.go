@@ -28,7 +28,7 @@ func (h *Handlers) IsAdmin(ctx context.Context, req *ssov1.IsAdminRequest) (*sso
 	output, err := h.uc.IsAdmin(ctx, input)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserNotFound) {
-			return nil, errorResponse(codes.InvalidArgument, errorPayload{Type: entity.ErrUserNotFound})
+			return nil, errorResponse(codes.NotFound, errorPayload{Type: entity.ErrUserNotFound})
 		}
 
 		return nil, errorResponse(codes.Internal, errorPayload{Type: base_errors.InternalServer})

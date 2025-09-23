@@ -29,7 +29,7 @@ func (h *Handlers) Register(ctx context.Context, req *ssov1.RegisterRequest) (*s
 	output, err := h.uc.Register(ctx, input)
 	if err != nil {
 		if errors.Is(err, entity.ErrUserAlreadyExists) {
-			return nil, errorResponse(codes.InvalidArgument, errorPayload{Type: entity.ErrUserAlreadyExists})
+			return nil, errorResponse(codes.AlreadyExists, errorPayload{Type: entity.ErrUserAlreadyExists})
 		}
 
 		return nil, errorResponse(codes.Internal, errorPayload{Type: base_errors.InternalServer})
