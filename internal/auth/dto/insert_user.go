@@ -1,6 +1,6 @@
 package dto
 
-type InsertUserInput struct {
+type SaveUserInput struct {
 	Email    string
 	PassHash []byte
 }

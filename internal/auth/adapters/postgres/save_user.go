@@ -10,7 +10,7 @@ import (
 	"github.com/doug-martin/goqu/v9"
 )
 
-func (p *Postgres) InsertUser(ctx context.Context, input dto.InsertUserInput) (int64, error) {
+func (p *Postgres) SaveUser(ctx context.Context, input dto.SaveUserInput) (int64, error) {
 	var userId int64
 
 	ds := goqu.Insert("user").
